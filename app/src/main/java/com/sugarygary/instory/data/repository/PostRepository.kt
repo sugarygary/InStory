@@ -6,6 +6,12 @@ import java.io.File
 
 interface PostRepository {
     suspend fun fetchStories(): LiveData<State<List<Story>>>
+    suspend fun fetchStoriesWithLocation(): LiveData<State<List<Story>>>
     suspend fun fetchStoryDetail(id: String): LiveData<State<Story>>
-    suspend fun postStory(file: File, description: String): LiveData<State<String>>
+    suspend fun postStory(
+        file: File,
+        description: String,
+        latitude: Float?,
+        longitude: Float?
+    ): LiveData<State<String>>
 }

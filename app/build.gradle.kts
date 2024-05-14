@@ -4,6 +4,7 @@ plugins {
     id("com.google.devtools.ksp")
     id("androidx.navigation.safeargs")
     id("com.google.dagger.hilt.android")
+    alias(libs.plugins.googleAndroidLibrariesMapsplatformSecretsGradlePlugin)
 }
 
 android {
@@ -61,6 +62,7 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.legacy.support.v4)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.play.services.maps)
     ksp(libs.androidx.room.compiler)
     //Glide
     implementation(libs.glide)
@@ -84,6 +86,13 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     //Swipe Refresh Layout
     implementation(libs.androidx.swiperefreshlayout)
+    //Read more text
+    implementation("kr.co.prnd:readmore-textview:1.0.0")
+    //GPlay Location Service
+    implementation("com.google.android.gms:play-services-location:21.2.0")
+    //Paging
+    implementation("androidx.paging:paging-runtime-ktx:3.2.1")
+    implementation("androidx.room:room-paging:2.6.1")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

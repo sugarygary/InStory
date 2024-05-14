@@ -1,5 +1,7 @@
 package com.sugarygary.instory.data.remote.response
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.squareup.moshi.JsonClass
 import com.squareup.moshi.Json
 
@@ -7,7 +9,7 @@ import com.squareup.moshi.Json
 data class StoryResponse(
 
     @Json(name = "listStory")
-    val listStory: List<Story>? = null,
+    val listStory: List<Story>,
 
     @Json(name = "error")
     val error: Boolean,
@@ -16,6 +18,7 @@ data class StoryResponse(
     val message: String
 )
 
+@Entity(tableName = "stories")
 @JsonClass(generateAdapter = true)
 data class Story(
 
@@ -32,11 +35,13 @@ data class Story(
     val description: String,
 
     @Json(name = "lon")
-    val lon: Any? = null,
+    val lon: Float? = null,
 
+    @PrimaryKey
     @Json(name = "id")
     val id: String,
 
     @Json(name = "lat")
-    val lat: Any? = null
+    val lat: Float? = null
 )
+

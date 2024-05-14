@@ -15,23 +15,26 @@ class AuthRepositoryImpl @Inject constructor(
 ) : AuthRepository {
     override suspend fun checkToken(): LiveData<State<String>> = liveData {
         emit(State.Loading)
-        try {
-            if (dataStoreManager.storyJwtToken.first().isNullOrEmpty()) {
-                emit(State.Error("Unauthorized"))
-                return@liveData
-            }
-            val response = storyApiService.fetchStories()
-            if (response.error) {
-                emit(State.Error(response.message))
-            } else {
-                emit(State.Success(response.message))
-            }
-        } catch (e: Exception) {
-            when (e) {
-                is HttpException -> emit(State.Error(e.handleError()))
-                else -> emit(State.Error("Unexpected error"))
-            }
+//        try {
+        if (dataStoreManager.storyJwtToken.first().isNullOrEmpty()) {
+            emit(State.Error("Unauthorized"))
+            return@liveData
+        } else {
+            emit(State.Success("Granted"))
         }
+
+//            val response = storyApiService.fetchStories()
+//            if (response.error) {
+//                emit(State.Error(response.message))
+//            } else {
+//                emit(State.Success(response.message))
+//            }
+//        } catch (e: Exception) {
+//            when (e) {
+//                is HttpException -> emit(State.Error(e.handleError()))
+//                else -> emit(State.Error("Unexpected error"))
+//            }
+//        }
     }
 
     override suspend fun login(email: String, password: String): LiveData<State<String>> =

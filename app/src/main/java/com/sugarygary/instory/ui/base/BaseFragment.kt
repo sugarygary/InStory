@@ -24,6 +24,7 @@ abstract class BaseFragment<VB : ViewBinding>(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         _binding = inflate.invoke(inflater, container, false)
+        setupMaps(savedInstanceState)
         return _binding?.root
     }
 
@@ -56,6 +57,7 @@ abstract class BaseFragment<VB : ViewBinding>(
     protected open fun setupObservers() = Unit
 
     protected open fun handleTransition() = Unit
+    protected open fun setupMaps(savedInstanceState: Bundle?) = Unit
 
 
 }

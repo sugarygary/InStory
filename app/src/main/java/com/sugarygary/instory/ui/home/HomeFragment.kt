@@ -87,6 +87,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         requireActivity().startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
                         return@setOnMenuItemClickListener true
                     }
+
+                    R.id.action_maps -> {
+                        findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToMapsFragment())
+                        return@setOnMenuItemClickListener true
+                    }
                 }
                 false
             }

@@ -64,30 +64,19 @@
             tools:src="@tools:sample/avatars"
             tools:srcCompat="@tools:sample/avatars" />
 
-        <TextView
-            android:id="@+id/tvDescription"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:text="@string/lorem_ipsum_long"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tv_item_name2"
-            app:layout_constraintTop_toBottomOf="@+id/iv_item_photo" />
 
-        <TextView
-            android:id="@+id/tv_item_name2"
-            android:layout_width="wrap_content"
+        <kr.co.prnd.readmore.ReadMoreTextView
+            android:id="@+id/tv_description"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="@string/sample_username"
-            android:textStyle="bold"
+            android:layout_marginEnd="16dp"
+            android:text="@string/lorem_ipsum_long"
+            app:readMoreMaxLine="2"
+            app:readMoreText="@string/read_more_text"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_item_photo" />
 

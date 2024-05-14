@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.sugarygary.instory.R
 import com.sugarygary.instory.data.remote.response.Story
 import com.sugarygary.instory.databinding.ItemStoryBinding
+import com.sugarygary.instory.util.createSpannableString
 import com.sugarygary.instory.util.glide
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -27,8 +28,8 @@ class StoryAdapter(private val onClickRoot: (String) -> Unit) :
         val item = getItem(position)
         with(holder.binding) {
             tvItemName.text = item.name
-            tvItemName2.text = item.name
-            tvDescription.text = item.description
+            tvDescription.text =
+                createSpannableString(username = item.name, description = item.description)
             ivItemPhoto.glide(item.photoUrl)
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
             val dateTime = LocalDateTime.parse(item.createdAt, formatter)

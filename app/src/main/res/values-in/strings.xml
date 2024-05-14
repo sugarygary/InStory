@@ -33,6 +33,11 @@
     <string name="story_minute_timestamp">• %1$dm</string>
     <string name="story_day_timestamp">• %1$dh</string>
     <string name="story_week_timestamp">• %1$dmgg</string>
+    <string name="map_story_hour_timestamp">Terakhir online %1$d jam yang lalu</string>
+    <string name="map_story_second_timestamp">Terakhir online %1$d detik yang lalu</string>
+    <string name="map_story_minute_timestamp">Terakhir online %1$d menit yang lalu</string>
+    <string name="map_story_day_timestamp">Terakhir online %1$d hari yang lalu</string>
+    <string name="map_story_week_timestamp">Terakhir online %1$d minggu yang lalu</string>
     <string name="error_fetching_data">Terjadi kesalahan saat memuat data</string>
     <string name="story_image_description">Ini adalah gambar story</string>
     <string name="sample_username">gary3santo</string>
@@ -48,4 +53,7 @@
     <string name="story_successfully_posted">Story berhasil dibagikan</string>
     <string name="tap_image_to_choose">Tekan Gambar untuk Mengganti</string>
     <string name="upload">Unggah</string>
+    <string name="map_description">Peta yang menunjukkan user Instory di dunia</string>
+    <string name="maps">Peta</string>
+    <string name="read_more_text">…Baca selengkapnya</string>
 </resources>

@@ -33,6 +33,11 @@
     <string name="story_minute_timestamp">• %1$dm</string>
     <string name="story_day_timestamp">• %1$dd</string>
     <string name="story_week_timestamp">• %1$dw</string>
+    <string name="map_story_hour_timestamp">Last online %1$d hour(s) ago</string>
+    <string name="map_story_second_timestamp">Last online %1$d second(s) ago</string>
+    <string name="map_story_minute_timestamp">Last online %1$d minute(s) ago</string>
+    <string name="map_story_day_timestamp">Last online %1$d day(s) ago</string>
+    <string name="map_story_week_timestamp">Last online %1$d week(s) ago</string>
     <string name="error_fetching_data">Error fetching data</string>
     <string name="story_image_description">This is story image</string>
     <string name="sample_username">gary3santo</string>
@@ -48,4 +53,10 @@
     <string name="story_successfully_posted">Story successfully posted</string>
     <string name="tap_image_to_choose">Tap Image to Choose</string>
     <string name="upload">Upload</string>
+    <string name="map_description">Map containing InStory users around the world</string>
+    <string name="maps">Maps</string>
+    <string name="read_more_text">…Read more</string>
+    <string name="unable_to_access_location">Unable to access location</string>
+    <string name="fail_location">Location is not found. Try Again</string>
+    <string name="retry">Retry</string>
 </resources>

@@ -1,11 +1,14 @@
 package com.sugarygary.instory.ui.add
 
+import android.Manifest
 import android.app.Dialog
 import android.content.ContentUris
 import android.content.ContentValues
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.location.Location
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -23,6 +26,9 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.transition.platform.MaterialArcMotion
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import com.sugarygary.instory.BuildConfig
@@ -39,6 +45,8 @@ import java.io.InputStream
 @AndroidEntryPoint
 class AddFragment : BaseFragment<FragmentAddBinding>(FragmentAddBinding::inflate) {
     private val viewModel: AddViewModel by viewModels()
+    private var currentLatLng: LatLng? = null
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val launcherGallery = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
     ) { uri: Uri? ->
@@ -48,6 +56,29 @@ class AddFragment : BaseFragment<FragmentAddBinding>(FragmentAddBinding::inflate
             viewModel.setImageUri(uri)
         }
     }
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            when {
+                permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
+                    getLastLocation()
+                }
+
+                permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
+                    getLastLocation()
+                }
+
+                else -> {
+                    binding.switch1.isChecked = false
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.unable_to_access_location),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
 
     private fun createCustomTempFile(context: Context): File {
         val filesDir = context.externalCacheDir
@@ -145,6 +176,38 @@ class AddFragment : BaseFragment<FragmentAddBinding>(FragmentAddBinding::inflate
         )
     }
 
+    private fun checkPermission(permission: String): Boolean {
+        return ContextCompat.checkSelfPermission(
+            requireContext(),
+            permission
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun getLastLocation() {
+        if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) &&
+            checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+        ) {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    currentLatLng = LatLng(location.latitude, location.longitude)
+                } else {
+                    Toast.makeText(
+                        requireActivity(),
+                        getString(R.string.fail_location),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        } else {
+            requestPermissionLauncher.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            )
+        }
+    }
+
 
     private fun showDialog() {
         val dialog = Dialog(requireContext())
@@ -182,6 +245,10 @@ class AddFragment : BaseFragment<FragmentAddBinding>(FragmentAddBinding::inflate
         }
     }
 
+    override fun initData() {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+    }
+
     override fun setupListeners() {
         with(binding) {
             materialToolbar3.setNavigationOnClickListener {
@@ -211,7 +278,38 @@ class AddFragment : BaseFragment<FragmentAddBinding>(FragmentAddBinding::inflate
                 }
                 val imageFile = uriToFile(tempUri, requireContext())
                 val description = edAddDescription.text.toString()
-                viewModel.postStory(imageFile, description)
+                if (switch1.isChecked) {
+                    viewModel.postStory(
+                        imageFile,
+                        description,
+                        currentLatLng?.latitude?.toFloat(),
+                        currentLatLng?.longitude?.toFloat()
+                    )
+                } else {
+                    viewModel.postStory(
+                        imageFile,
+                        description,
+                        null,
+                        null
+                    )
+                }
+
+            }
+            switch1.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) {
+                    if (!checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) ||
+                        !checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+                    ) {
+                        requestPermissionLauncher.launch(
+                            arrayOf(
+                                Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.ACCESS_COARSE_LOCATION
+                            )
+                        )
+                    } else {
+                        getLastLocation()
+                    }
+                }
             }
         }
     }

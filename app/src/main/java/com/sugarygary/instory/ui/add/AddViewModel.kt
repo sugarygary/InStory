@@ -27,9 +27,9 @@ class AddViewModel @Inject constructor(private val postRepository: PostRepositor
         _imageUri.postValue(uri)
     }
 
-    fun postStory(imageFile: File, description: String) {
+    fun postStory(imageFile: File, description: String, latitude:Float?, longitude: Float?) {
         viewModelScope.launch {
-            postRepository.postStory(imageFile, description).asFlow().collect {
+            postRepository.postStory(imageFile, description, latitude, longitude).asFlow().collect {
                 _postResponse.postValue(it)
             }
         }
