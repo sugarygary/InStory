@@ -73,7 +73,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/button_add"
                 app:layout_constraintStart_toStartOf="@+id/button_add">
 
-                <Switch
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/switch1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Use my location" />
+                    android:text="@string/use_my_location" />
             </LinearLayout>
 
             <Button

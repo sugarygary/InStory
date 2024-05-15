@@ -12,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginBottom="16dp"
         android:textAlignment="center"
         android:textColor="?android:textColorPrimary"
         tools:text="Timeout" />
@@ -29,5 +30,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/retry"
+        android:textColor="@android:color/white"
         app:cornerRadius="8dp" />
 </LinearLayout>

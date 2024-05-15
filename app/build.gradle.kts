@@ -18,7 +18,7 @@ android {
         versionCode = 1
         versionName = "1.0"
         buildConfigField("String", "BASE_URL", "\"https://story-api.dicoding.dev/v1/\"")
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.sugarygary.instory.CustomTestRunner"
         renderscriptTargetApi = 26
         renderscriptSupportModeEnabled = true
     }
@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.androidx.legacy.support.v4)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.play.services.maps)
+    implementation(libs.androidx.espresso.idling.resource)
     ksp(libs.androidx.room.compiler)
     //Glide
     implementation(libs.glide)
@@ -87,13 +88,21 @@ dependencies {
     //Swipe Refresh Layout
     implementation(libs.androidx.swiperefreshlayout)
     //Read more text
-    implementation("kr.co.prnd:readmore-textview:1.0.0")
+    implementation(libs.readmore.textview)
     //GPlay Location Service
-    implementation("com.google.android.gms:play-services-location:21.2.0")
+    implementation(libs.play.services.location)
     //Paging
-    implementation("androidx.paging:paging-runtime-ktx:3.2.1")
-    implementation("androidx.room:room-paging:2.6.1")
+    implementation(libs.androidx.paging.runtime.ktx)
+    implementation(libs.androidx.room.paging)
     testImplementation(libs.junit)
+    testImplementation(libs.androidx.core.testing)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.inline)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.navigation.testing)
+    kspAndroidTest(libs.hilt.android.compiler)
+    androidTestImplementation(libs.hilt.android.testing)
+    debugImplementation(libs.androidx.fragment.testing)
 }

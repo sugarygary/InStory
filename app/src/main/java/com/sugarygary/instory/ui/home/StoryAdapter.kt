@@ -2,8 +2,8 @@ package com.sugarygary.instory.ui.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.sugarygary.instory.R
 import com.sugarygary.instory.data.remote.response.Story
@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
 class StoryAdapter(private val onClickRoot: (String) -> Unit) :
-    ListAdapter<Story, StoryAdapter.StoryViewHolder>(DIFF_CALLBACK) {
+    PagingDataAdapter<Story, StoryAdapter.StoryViewHolder>(DIFF_CALLBACK) {
     private lateinit var parent: ViewGroup
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoryViewHolder {
         val binding = ItemStoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -25,7 +25,7 @@ class StoryAdapter(private val onClickRoot: (String) -> Unit) :
     }
 
     override fun onBindViewHolder(holder: StoryViewHolder, position: Int) {
-        val item = getItem(position)
+        val item = getItem(position) ?: return
         with(holder.binding) {
             tvItemName.text = item.name
             tvDescription.text =

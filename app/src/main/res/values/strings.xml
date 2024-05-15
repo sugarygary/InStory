@@ -59,4 +59,6 @@
     <string name="unable_to_access_location">Unable to access location</string>
     <string name="fail_location">Location is not found. Try Again</string>
     <string name="retry">Retry</string>
+    <string name="unable_to_fetch_data">Unable to fetch data</string>
+    <string name="use_my_location">Use my location</string>
 </resources>

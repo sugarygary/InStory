@@ -1,10 +1,12 @@
-package com.sugarygary.instory.data.remote.mediator
+package com.sugarygary.instory.data.repository
 
+import android.content.Context
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
+import com.sugarygary.instory.R
 import com.sugarygary.instory.data.local.database.InstoryDatabase
 import com.sugarygary.instory.data.local.database.model.RemoteKey
 import com.sugarygary.instory.data.remote.response.Story
@@ -12,14 +14,10 @@ import com.sugarygary.instory.data.remote.retrofit.StoryApiService
 
 @OptIn(ExperimentalPagingApi::class)
 class StoryRemoteMediator(
+    private val context: Context,
     private val database: InstoryDatabase,
     private val storyApiService: StoryApiService
 ) : RemoteMediator<Int, Story>() {
-
-    private companion object {
-        const val INITIAL_PAGE_INDEX = 1
-    }
-
     override suspend fun initialize(): InitializeAction {
         return InitializeAction.LAUNCH_INITIAL_REFRESH
     }
@@ -50,10 +48,8 @@ class StoryRemoteMediator(
         }
 
         try {
-            val responseData = storyApiService.fetchStories(page,state.config.pageSize)
-            val pageSize = state.config.pageSize
-            val offset = (page - 1) * pageSize
-            val endOfPaginationReached = responseData.listStory.size < offset
+            val responseData = storyApiService.fetchStories(page, state.config.pageSize)
+            val endOfPaginationReached = responseData.listStory.isEmpty()
 
             database.withTransaction {
                 if (loadType == LoadType.REFRESH) {
@@ -70,7 +66,7 @@ class StoryRemoteMediator(
             }
             return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
         } catch (exception: Exception) {
-            return MediatorResult.Error(exception)
+            return MediatorResult.Error(Throwable(context.getString(R.string.unable_to_fetch_data)))
         }
     }
 
@@ -92,6 +88,10 @@ class StoryRemoteMediator(
                 database.remoteKeyDao().getRemoteKeysId(id)
             }
         }
+    }
+
+    private companion object {
+        const val INITIAL_PAGE_INDEX = 1
     }
 
 }

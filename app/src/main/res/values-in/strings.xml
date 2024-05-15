@@ -56,4 +56,9 @@
     <string name="map_description">Peta yang menunjukkan user Instory di dunia</string>
     <string name="maps">Peta</string>
     <string name="read_more_text">…Baca selengkapnya</string>
+    <string name="unable_to_access_location">Tidak dapat mengakses lokasi</string>
+    <string name="fail_location">Lokasi tidak ditemukan. Coba Lagi</string>
+    <string name="retry">Muat Ulang</string>
+    <string name="unable_to_fetch_data">Gagal memuat data</string>
+    <string name="use_my_location">Gunakan lokasi</string>
 </resources>

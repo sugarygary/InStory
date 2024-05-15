@@ -40,6 +40,7 @@ object NetworkModule {
         return OkHttpClient.Builder().addInterceptor(loggingInterceptor)
             .addInterceptor(authInterceptor).build()
     }
+
     @Provides
     fun provideStoryApi(client: OkHttpClient): StoryApiService {
         val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()

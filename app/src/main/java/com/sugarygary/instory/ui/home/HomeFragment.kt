@@ -4,8 +4,6 @@ import android.content.Intent
 import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.core.view.isGone
-import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
@@ -13,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SnapHelper
 import com.sugarygary.instory.R
-import com.sugarygary.instory.data.repository.State
 import com.sugarygary.instory.databinding.FragmentHomeBinding
 import com.sugarygary.instory.ui.base.BaseFragment
 import com.sugarygary.instory.util.StorySnapHelper
@@ -32,19 +29,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     override fun setupUI() {
+        //Matikan snapHelper jika mengganggu
         val snapHelper: SnapHelper = StorySnapHelper()
         storyAdapter = StoryAdapter(::openStoryDetail)
         val layoutManager =
-            LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+            LinearLayoutManager(requireActivity())
         with(binding) {
             snapHelper.attachToRecyclerView(rvStories)
             rvStories.layoutManager = layoutManager
-            rvStories.adapter = storyAdapter
+            rvStories.adapter = storyAdapter.withLoadStateFooter(
+                footer = LoadingStateAdapter {
+                    storyAdapter.retry()
+                }
+            )
         }
-    }
-
-    override fun initData() {
-        viewModel.fetchStories()
     }
 
     override fun setupListeners() {
@@ -70,7 +68,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     }
                 })
             refreshLayout.setOnRefreshListener {
-                viewModel.fetchStories()
+                storyAdapter.refresh()
                 refreshLayout.isRefreshing = false
             }
             materialToolbar.setOnMenuItemClickListener { item ->
@@ -100,7 +98,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     rvStories.smoothScrollToPosition(0)
                 }
                 refreshLayout.isRefreshing = true
-                viewModel.fetchStories()
+                storyAdapter.refresh()
                 refreshLayout.isRefreshing = false
             }
             floatingActionButton.setOnClickListener {
@@ -113,39 +111,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     override fun setupObservers() {
-        with(binding) {
-            viewModel.stories.observe(viewLifecycleOwner) {
-                when (it) {
-                    State.Empty -> {
-                        rvStories.isGone = true
-                        layoutError.isGone = true
-                        loadingStory.isGone = true
-                        layoutEmpty.isVisible = true
-                    }
-
-                    is State.Error -> {
-                        rvStories.isGone = true
-                        layoutEmpty.isGone = true
-                        loadingStory.isGone = true
-                        layoutError.isVisible = true
-                    }
-
-                    State.Loading -> {
-                        rvStories.isGone = true
-                        layoutEmpty.isGone = true
-                        layoutError.isGone = true
-                        loadingStory.isVisible = true
-                    }
-
-                    is State.Success -> {
-                        loadingStory.isGone = true
-                        layoutEmpty.isGone = true
-                        layoutError.isGone = true
-                        rvStories.isVisible = true
-                        storyAdapter.submitList(it.data)
-                    }
-                }
-            }
+        viewModel.stories.observe(viewLifecycleOwner) {
+            storyAdapter.submitData(viewLifecycleOwner.lifecycle, it)
         }
     }
 }

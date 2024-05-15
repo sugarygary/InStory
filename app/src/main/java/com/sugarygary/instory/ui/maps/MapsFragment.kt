@@ -71,10 +71,12 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>(FragmentMapsBinding::infl
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-        map.uiSettings.isZoomControlsEnabled = true
-        map.uiSettings.isIndoorLevelPickerEnabled = true
-        map.uiSettings.isCompassEnabled = true
-        map.uiSettings.isMapToolbarEnabled = true
+        with(map) {
+            uiSettings.isZoomControlsEnabled = true
+            uiSettings.isIndoorLevelPickerEnabled = true
+            uiSettings.isCompassEnabled = true
+            uiSettings.isMapToolbarEnabled = true
+        }
         try {
             val success =
                 map.setMapStyle(
@@ -117,9 +119,7 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>(FragmentMapsBinding::infl
         viewModel.storyResponse.observe(viewLifecycleOwner) {
             when (it) {
                 State.Empty -> {}
-                is State.Error -> {
-                }
-
+                is State.Error -> {}
                 State.Loading -> {}
                 is State.Success -> {
                     val builder = LatLngBounds.Builder()

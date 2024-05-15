@@ -53,10 +53,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                                 edLoginEmail.error = getString(R.string.email_not_found_message)
                                 edLoginEmail.requestFocus()
                             }
+
                             "Invalid password" -> {
                                 edLoginPassword.error = getString(R.string.invalid_password)
                                 edLoginPassword.requestFocus()
                             }
+
                             else -> {
                                 Toast.makeText(
                                     requireActivity(),
